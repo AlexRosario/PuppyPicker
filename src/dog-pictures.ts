@@ -4,12 +4,13 @@ import Chihuahua from "/assets/chihuahua.avif";
 import Corgi from "/assets/corgi.png";
 import Cowardly from "/assets/cowardly.png";
 import Dalmation from "/assets/dalmation.png";
-
+import Golden from "/assets/Golden.jpeg";
 export const dogPictures = {
-  BlueHeeler,
-  Boxer,
-  Chihuahua,
-  Corgi,
-  Cowardly,
-  Dalmation,
+	BlueHeeler,
+	Boxer,
+	Chihuahua,
+	Corgi,
+	Cowardly,
+	Dalmation,
+	Golden,
 };

@@ -1,92 +1,76 @@
+import { useState } from "react";
 import { DogCard } from "../Shared/DogCard";
-import { dogPictures } from "../dog-pictures";
+import { Requests } from "../api";
 
-// Right now these dogs are constant, but in reality we should be getting these from our server
-export const FunctionalDogs = () => {
-  return (
-    //  the "<> </>"" are called react fragments, it's like adding all the html inside
-    // without adding an actual html element
-    <>
-      <DogCard
-        dog={{
-          id: 1,
-          image: dogPictures.BlueHeeler,
-          description: "Example Description",
-          isFavorite: false,
-          name: "Cute Blue Heeler",
-        }}
-        key={1}
-        onTrashIconClick={() => {
-          alert("clicked trash");
-        }}
-        onHeartClick={() => {
-          alert("clicked heart");
-        }}
-        onEmptyHeartClick={() => {
-          alert("clicked empty heart");
-        }}
-        isLoading={false}
-      />
-      <DogCard
-        dog={{
-          id: 2,
-          image: dogPictures.Boxer,
-          description: "Example Description",
-          isFavorite: false,
-          name: "Cute Boxer",
-        }}
-        key={2}
-        onTrashIconClick={() => {
-          alert("clicked trash");
-        }}
-        onHeartClick={() => {
-          alert("clicked heart");
-        }}
-        onEmptyHeartClick={() => {
-          alert("clicked empty heart");
-        }}
-        isLoading={false}
-      />
-      <DogCard
-        dog={{
-          id: 3,
-          image: dogPictures.Chihuahua,
-          description: "Example Description",
-          isFavorite: false,
-          name: "Cute Chihuahua",
-        }}
-        key={3}
-        onTrashIconClick={() => {
-          alert("clicked trash");
-        }}
-        onHeartClick={() => {
-          alert("clicked heart");
-        }}
-        onEmptyHeartClick={() => {
-          alert("clicked empty heart");
-        }}
-        isLoading={false}
-      />
-      <DogCard
-        dog={{
-          id: 4,
-          image: dogPictures.Corgi,
-          description: "Example Description",
-          isFavorite: false,
-          name: "Cute Corgi",
-        }}
-        key={4}
-        onTrashIconClick={() => {
-          alert("clicked trash");
-        }}
-        onHeartClick={() => {
-          alert("clicked heart");
-        }}
-        onEmptyHeartClick={() => {
-          alert("clicked empty heart");
-        }}
-        isLoading={false}
-      />
-    </>
-  );
+import { Dog, DogProps } from "../types"; // Import the Dog type
+
+export const FunctionalDogs = ({
+	displayFavorites,
+	favoriteDogs,
+	unfavoriteDogs,
+	allDogs,
+	setAllDogs,
+	setFavoriteDogs = () => {},
+	setUnfavoriteDogs = () => {},
+}: DogProps) => {
+	const [isLoading, setIsLoading] = useState(false);
+	const dogsToDisplay =
+		displayFavorites === "all"
+			? allDogs
+			: displayFavorites === "favorited"
+			? favoriteDogs
+			: unfavoriteDogs;
+
+	const refreshState = () => {
+		Requests.getAllDogs().then((data: Dog[]) => {
+			setAllDogs(data);
+			setFavoriteDogs(data.filter((dog) => dog.isFavorite));
+			setUnfavoriteDogs(data.filter((dog) => !dog.isFavorite));
+		});
+	};
+
+	const handleDeleteDog = (dogId: number) => {
+		alert("clicked trash");
+		setIsLoading(true);
+		Requests.deleteDog(dogId)
+			.catch((error) => {
+				console.error("Error deleting dog:", error);
+			})
+			.finally(() => {
+				setIsLoading(false);
+				refreshState();
+			});
+	};
+
+	const handleIsFavorite = (dogId: number) => {
+		alert("clicked heart");
+		setIsLoading(true);
+		const dog = dogsToDisplay!.find((dog) => dog.id === dogId);
+		if (dog) {
+			Requests.updateDog(dogId, dog.isFavorite)
+				.catch((error) => {
+					console.error("Error updating dog:", error);
+				})
+				.finally(() => {
+					setIsLoading(false);
+					refreshState();
+				});
+		}
+	};
+
+	return (
+		<>
+			{dogsToDisplay?.map((dog, index) => (
+				<DogCard
+					dog={dog}
+					key={dog.id}
+					isLoading={isLoading}
+					onTrashIconClick={() => handleDeleteDog(dog.id)}
+					onHeartClick={() => handleIsFavorite(dog.id)}
+					onEmptyHeartClick={() => handleIsFavorite(dog.id)}
+				/>
+			))}
+			;
+		</>
+	);
 };
