@@ -7,11 +7,7 @@ import toast from "react-hot-toast";
 // use this as your default selected image
 const defaultSelectedImage = dogPictures.BlueHeeler;
 
-export const FunctionalCreateDogForm = ({
-	setAllDogs,
-	setFavoriteDogs,
-	setUnfavoriteDogs,
-}: SetProps) => {
+export const FunctionalCreateDogForm = ({ setAllDogs }: SetProps) => {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [image, setImage] = useState(defaultSelectedImage);
@@ -33,8 +29,6 @@ export const FunctionalCreateDogForm = ({
 			});
 		Requests.getAllDogs().then((data: Dog[]) => {
 			setAllDogs(data);
-			setFavoriteDogs(data.filter((dog) => dog.isFavorite));
-			setUnfavoriteDogs(data.filter((dog) => !dog.isFavorite));
 		});
 		setName("");
 		setDescription("");

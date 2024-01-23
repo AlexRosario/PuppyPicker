@@ -5,68 +5,51 @@ import { SectionProps } from "../types";
 
 export class ClassSection extends Component<SectionProps> {
 	render() {
-		const {
-			children,
-			displayForm,
-			setDisplayForm,
-			displayFavorites,
-			setDisplayFavorites,
-			favoriteDogs,
-			unfavoriteDogs,
-		} = this.props;
-
+		const { children, activeTab, setActiveTab, allDogs } = this.props;
+		const favoriteDogs = allDogs?.filter((dog) => dog.isFavorite);
+		const unfavoriteDogs = allDogs?.filter((dog) => !dog.isFavorite);
 		return (
 			<section id="main-section">
 				<div className="container-header">
 					<div className="container-label">Dogs: </div>
 					<Link to={"/functional"} className="btn">
-						Change to Functional
+						Change to Function
 					</Link>
 					<div className="selectors">
+						{/* This should display the favorited count */}
 						<div
-							className={`selector ${
-								displayFavorites === "all" && !displayForm ? "active" : ""
-							}`}
+							className={`selector ${activeTab === "none" ? "active" : ""}`}
 							onClick={() => {
-								if (displayForm === true) {
-									setDisplayForm(!displayForm);
-								}
-								setDisplayFavorites("all");
+								setActiveTab("none");
 							}}>
-							All
+							All( {allDogs?.length} )
 						</div>
 						<div
 							className={`selector ${
-								displayFavorites === "favorited" && !displayForm ? "active" : ""
+								activeTab === "favorites" ? "active" : ""
 							}`}
 							onClick={() => {
-								if (displayForm === true) {
-									setDisplayForm(!displayForm);
-								}
-								setDisplayFavorites("favorited");
+								setActiveTab("favorites");
 							}}>
 							favorited ( {favoriteDogs?.length} )
 						</div>
+
+						{/* This should display the unfavorited count */}
 						<div
 							className={`selector ${
-								displayFavorites === "unfavorited" && !displayForm
-									? "active"
-									: ""
+								activeTab === "unfavorites" ? "active" : ""
 							}`}
 							onClick={() => {
-								if (displayForm === true) {
-									setDisplayForm(!displayForm);
-								}
-								setDisplayFavorites("unfavorited");
+								setActiveTab("unfavorites");
 							}}>
 							unfavorited ( {unfavoriteDogs?.length} )
 						</div>
 						<div
-							className={`selector ${displayForm ? "active" : ""}`}
+							className={`selector ${
+								activeTab === "create-form" ? "active" : ""
+							}`}
 							onClick={() => {
-								if (displayForm === false) {
-									setDisplayForm(!displayForm);
-								}
+								setActiveTab("create-form");
 							}}>
 							create dog
 						</div>

@@ -4,13 +4,12 @@ import { SectionProps } from "../types";
 
 export const FunctionalSection = ({
 	children,
-	displayForm,
-	setDisplayForm,
-	displayFavorites,
-	setDisplayFavorites,
-	favoriteDogs,
-	unfavoriteDogs,
+	activeTab,
+	setActiveTab,
+	allDogs,
 }: SectionProps) => {
+	const favoriteDogs = allDogs?.filter((dog) => dog.isFavorite);
+	const unfavoriteDogs = allDogs?.filter((dog) => !dog.isFavorite);
 	return (
 		<section id="main-section">
 			<div className="container-header">
@@ -21,26 +20,16 @@ export const FunctionalSection = ({
 				<div className="selectors">
 					{/* This should display the favorited count */}
 					<div
-						className={`selector ${
-							displayFavorites === "all" && !displayForm ? "active" : ""
-						}`}
+						className={`selector ${activeTab === "none" ? "active" : ""}`}
 						onClick={() => {
-							if (displayForm === true) {
-								setDisplayForm(!displayForm);
-							}
-							setDisplayFavorites("all");
+							setActiveTab("none");
 						}}>
-						All
+						All( {allDogs?.length} )
 					</div>
 					<div
-						className={`selector ${
-							displayFavorites === "favorited" && !displayForm ? "active" : ""
-						}`}
+						className={`selector ${activeTab === "favorites" ? "active" : ""}`}
 						onClick={() => {
-							if (displayForm === true) {
-								setDisplayForm(!displayForm);
-							}
-							setDisplayFavorites("favorited");
+							setActiveTab("favorites");
 						}}>
 						favorited ( {favoriteDogs?.length} )
 					</div>
@@ -48,22 +37,19 @@ export const FunctionalSection = ({
 					{/* This should display the unfavorited count */}
 					<div
 						className={`selector ${
-							displayFavorites === "unfavorited" && !displayForm ? "active" : ""
+							activeTab === "unfavorites" ? "active" : ""
 						}`}
 						onClick={() => {
-							if (displayForm === true) {
-								setDisplayForm(!displayForm);
-							}
-							setDisplayFavorites("unfavorited");
+							setActiveTab("unfavorites");
 						}}>
 						unfavorited ( {unfavoriteDogs?.length} )
 					</div>
 					<div
-						className={`selector ${displayForm ? "active" : ""}`}
+						className={`selector ${
+							activeTab === "create-form" ? "active" : ""
+						}`}
 						onClick={() => {
-							if (displayForm === false) {
-								setDisplayForm(!displayForm);
-							}
+							setActiveTab("create-form");
 						}}>
 						create dog
 					</div>

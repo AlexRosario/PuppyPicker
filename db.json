@@ -46,21 +46,21 @@
       "name": "dd",
       "image": "/assets/blue-heeler.png",
       "description": "d",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 84
     },
     {
       "name": "",
       "image": "/assets/blue-heeler.png",
       "description": "",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 86
     },
     {
       "name": "s",
       "image": "/assets/blue-heeler.png",
       "description": "s",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 87
     },
     {
@@ -69,13 +69,6 @@
       "description": "nn",
       "isFavorite": false,
       "id": 88
-    },
-    {
-      "name": "m",
-      "image": "/assets/blue-heeler.png",
-      "description": ";",
-      "isFavorite": false,
-      "id": 90
     },
     {
       "name": "Malaya",
@@ -88,7 +81,7 @@
       "name": "s",
       "image": "/assets/boxer.jpeg",
       "description": "d",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 92
     },
     {
@@ -116,22 +109,15 @@
       "name": "",
       "image": "/assets/blue-heeler.png",
       "description": "",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 98
     },
     {
       "name": "s",
       "image": "/assets/blue-heeler.png",
       "description": "d",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 99
-    },
-    {
-      "name": "",
-      "image": "/assets/blue-heeler.png",
-      "description": "",
-      "isFavorite": false,
-      "id": 100
     },
     {
       "name": "Pollo",
@@ -146,6 +132,20 @@
       "description": "g",
       "isFavorite": false,
       "id": 102
+    },
+    {
+      "name": "wally",
+      "image": "/assets/Golden.jpeg",
+      "description": "Gee willy",
+      "isFavorite": false,
+      "id": 103
+    },
+    {
+      "name": "Money",
+      "image": "/assets/blue-heeler.png",
+      "description": "man",
+      "isFavorite": true,
+      "id": 104
     }
   ]
 }

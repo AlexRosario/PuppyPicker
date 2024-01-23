@@ -3,34 +3,18 @@ import { ClassSection } from "./ClassSection";
 import { ClassDogs } from "./ClassDogs";
 import { ClassCreateDogForm } from "./ClassCreateDogForm";
 import { Requests } from "../api";
-import { Dog } from "../types";
+import { Dog, ActiveTab } from "../types";
 
 export class ClassApp extends Component {
 	state = {
-		displayForm: false,
-		displayFavorites: "all",
+		activeTab: "none",
 		allDogs: null,
-		favoriteDogs: [],
-		unfavoriteDogs: [],
 	};
-	setDisplayForm = (displayForm: boolean) => {
-		this.setState({ displayForm });
+	setActiveTab = (activeTab: ActiveTab) => {
+		this.setState({ activeTab });
 	};
-
-	setDisplayFavorites = (displayFavorites: string) => {
-		this.setState({ displayFavorites });
-	};
-
 	setAllDogs = (allDogs: Dog[] | null) => {
 		this.setState({ allDogs });
-	};
-
-	setFavoriteDogs = (favoriteDogs: Dog[]) => {
-		this.setState({ favoriteDogs });
-	};
-
-	setUnfavoriteDogs = (unfavoriteDogs: Dog[]) => {
-		this.setState({ unfavoriteDogs });
 	};
 
 	componentDidMount() {
@@ -43,13 +27,7 @@ export class ClassApp extends Component {
 		});
 	}
 	render() {
-		const {
-			displayForm,
-			displayFavorites,
-			allDogs,
-			favoriteDogs,
-			unfavoriteDogs,
-		} = this.state;
+		const { activeTab, allDogs } = this.state;
 
 		console.log(allDogs);
 		return (
@@ -58,30 +36,20 @@ export class ClassApp extends Component {
 					<h1>pup-e-picker (Class Version)</h1>
 				</header>
 				<ClassSection
-					displayForm={displayForm}
-					setDisplayForm={this.setDisplayForm}
-					displayFavorites={displayFavorites}
-					setDisplayFavorites={this.setDisplayFavorites}
-					favoriteDogs={favoriteDogs}
-					unfavoriteDogs={unfavoriteDogs}>
+					allDogs={allDogs}
+					setAllDogs={this.setAllDogs}
+					activeTab={activeTab}
+					setActiveTab={this.setActiveTab}>
 					{/* should be inside of the ClassSection component using react children */}
-					{!displayForm && (
+					{activeTab !== "create-form" && (
 						<ClassDogs
-							displayFavorites={displayFavorites}
+							activeTab={activeTab}
 							allDogs={allDogs}
 							setAllDogs={this.setAllDogs}
-							favoriteDogs={favoriteDogs}
-							setFavoriteDogs={this.setFavoriteDogs}
-							unfavoriteDogs={unfavoriteDogs}
-							setUnfavoriteDogs={this.setUnfavoriteDogs}
 						/>
 					)}
-					{displayForm && (
-						<ClassCreateDogForm
-							setAllDogs={this.setAllDogs}
-							setUnfavoriteDogs={this.setUnfavoriteDogs}
-							setFavoriteDogs={this.setFavoriteDogs}
-						/>
+					{activeTab === "create-form" && (
+						<ClassCreateDogForm setAllDogs={this.setAllDogs} />
 					)}
 				</ClassSection>
 			</div>

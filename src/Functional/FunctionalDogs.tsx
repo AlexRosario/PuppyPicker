@@ -2,35 +2,30 @@ import { useState } from "react";
 import { DogCard } from "../Shared/DogCard";
 import { Requests } from "../api";
 
-import { Dog, DogProps } from "../types"; // Import the Dog type
+import { Dog, DogProps } from "../types";
 
 export const FunctionalDogs = ({
-	displayFavorites,
-	favoriteDogs,
-	unfavoriteDogs,
+	activeTab,
 	allDogs,
 	setAllDogs,
-	setFavoriteDogs = () => {},
-	setUnfavoriteDogs = () => {},
 }: DogProps) => {
+	const favoriteDogs = allDogs?.filter((dog) => dog.isFavorite);
+	const unfavoriteDogs = allDogs?.filter((dog) => !dog.isFavorite);
 	const [isLoading, setIsLoading] = useState(false);
 	const dogsToDisplay =
-		displayFavorites === "all"
+		activeTab === "none"
 			? allDogs
-			: displayFavorites === "favorited"
+			: activeTab === "favorites"
 			? favoriteDogs
 			: unfavoriteDogs;
 
 	const refreshState = () => {
 		Requests.getAllDogs().then((data: Dog[]) => {
 			setAllDogs(data);
-			setFavoriteDogs(data.filter((dog) => dog.isFavorite));
-			setUnfavoriteDogs(data.filter((dog) => !dog.isFavorite));
 		});
 	};
 
 	const handleDeleteDog = (dogId: number) => {
-		alert("clicked trash");
 		setIsLoading(true);
 		Requests.deleteDog(dogId)
 			.catch((error) => {
@@ -43,9 +38,8 @@ export const FunctionalDogs = ({
 	};
 
 	const handleIsFavorite = (dogId: number) => {
-		alert("clicked heart");
 		setIsLoading(true);
-		const dog = dogsToDisplay!.find((dog) => dog.id === dogId);
+		const dog = allDogs!.find((dog) => dog.id === dogId);
 		if (dog) {
 			Requests.updateDog(dogId, dog.isFavorite)
 				.catch((error) => {
@@ -60,7 +54,7 @@ export const FunctionalDogs = ({
 
 	return (
 		<>
-			{dogsToDisplay?.map((dog, index) => (
+			{dogsToDisplay?.map((dog) => (
 				<DogCard
 					dog={dog}
 					key={dog.id}

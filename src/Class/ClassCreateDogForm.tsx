@@ -10,7 +10,7 @@ interface FormState extends Omit<Dog, "id"> {
 	isLoading: boolean;
 }
 
-export class ClassCreateDogForm extends Component<SetProps, FormState, Dog> {
+export class ClassCreateDogForm extends Component<SetProps> {
 	state: FormState = {
 		name: "",
 		description: "",
@@ -38,8 +38,6 @@ export class ClassCreateDogForm extends Component<SetProps, FormState, Dog> {
 			});
 		Requests.getAllDogs().then((data: Dog[]) => {
 			this.props.setAllDogs(data);
-			this.props.setFavoriteDogs(data.filter((dog) => dog.isFavorite));
-			this.props.setUnfavoriteDogs(data.filter((dog) => !dog.isFavorite));
 		});
 		this.setState({
 			name: "",
